@@ -65,7 +65,11 @@ export const Form = () => {
       <br></br>
       {state && (
         <div id="meme-container" className="image-container">
-          <img src={state} alt={topText} />
+          <img
+            src={state}
+            alt={topText}
+            style={{ maxWidth: "100%", maxHeight: "100%" }}
+          />
           <div className="text-container">
             <p>{topText}</p>
           </div>
