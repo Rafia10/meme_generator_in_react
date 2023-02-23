@@ -30,8 +30,8 @@ export const Form = () => {
     const memeContainer = document.getElementById("meme-container");
 
     if (memeContainer) {
-      const width = memeContainer.clientWidth;
-      const height = memeContainer.clientHeight;
+      const width = memeContainer.firstElementChild?.clientWidth;
+      const height = memeContainer.firstElementChild?.clientHeight;
       domtoimage
         .toBlob(memeContainer, {
           width,
