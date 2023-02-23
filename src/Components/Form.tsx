@@ -1,45 +1,46 @@
 import { useState } from "react";
 import memesData from "../memesData";
 import "./Form.css";
-import html2canvas from "html2canvas";
+import domtoimage from "dom-to-image";
 import { saveAs } from "file-saver";
+
 export const Form = () => {
   const [topText, setTopText] = useState("");
   const [bottomText, setBottomText] = useState("");
   const [state, setState] = useState("");
-  //@ts-ignore
-  function handleMemes(event) {
+
+  async function handleMemes(event: any) {
     event.preventDefault();
     const randomNumber = Math.floor(
       Math.random() * memesData.data.memes.length
     );
-    //@ts-ignore
-    setState(memesData.data.memes[randomNumber].url);
+
+    await setState(memesData.data.memes[randomNumber].url);
   }
-  //@ts-ignore
-  const handleInputChange = (event) => {
+
+  const handleInputChange = (event: any) => {
     if (event.target.name === "topText") {
       setTopText(event.target.value);
     } else if (event.target.name === "bottomText") {
       setBottomText(event.target.value);
     }
   };
+
   function handleDownload() {
     const memeContainer = document.getElementById("meme-container");
-    console.log(state);
-    //@ts-ignore
 
-    html2canvas(memeContainer).then((canvas) => {
-      //@ts-ignore
-      canvas.toBlob((blob) => {
-        console.log(blob);
-        //@ts-ignore
-        saveAs(blob, "image.png");
-      });
-
-      // Put your image url here.
-    });
-    // saveAs(state, "image.png");
+    if (memeContainer) {
+      const width = memeContainer.clientWidth;
+      const height = memeContainer.clientHeight;
+      domtoimage
+        .toBlob(memeContainer, {
+          width,
+          height,
+        })
+        .then((canvas) => {
+          saveAs(canvas, "image");
+        });
+    }
   }
 
   return (
@@ -73,6 +74,7 @@ export const Form = () => {
           </div>
         </div>
       )}
+      <br />
       <button className="form-button" onClick={handleDownload}>
         Download Meme
       </button>
